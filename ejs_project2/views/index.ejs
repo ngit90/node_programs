@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Second Task</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <p> This is Sample task 2</p>
+    </header>
+    <main>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <% cards.forEach(function(card) { %>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= card.title %></h5>
+                                <p class="card-text"><%= card.text %></p>
+                                <a href="<%= card.buttonLink %>" class="btn btn-primary"><%= card.buttonText %></a>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+
+    </main>
+    <footer>
+        <p>Copyright... Noopura</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
