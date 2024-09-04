@@ -1,8 +1,10 @@
 const express = require("express");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 
 const app = express();
 const port = 3001;
+
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));

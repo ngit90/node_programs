@@ -40,6 +40,15 @@ function checkLogin(req, res, next) {
     res.render('login', { alert: null });
   });
 
+  app.get('/new',(req,res) => {
+    res.render("new");
+  });
+  app.post('/formsub', (req,res) => {
+    const { data } = req.body;
+    console.log(`data from page ${data}`);
+    res.render("new");
+  });
+
 // Handle login form submission
 app.post('/login', preventCache, (req, res) => {
   const { email, password } = req.body;

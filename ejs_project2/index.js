@@ -1,12 +1,12 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+const path = require("path");
 
 const app = express();
 const port = 3002;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-//app.use(bodyParser.urlencoded({ extended : true}));
+
 
 const cards = [
     {
@@ -30,9 +30,9 @@ const cards = [
   ];
 
 app.get('/', (req, res) => {
-    res.status(200).render('index', { cards: cards });
+  res.status(200).render('index', { cards: cards, data :"StartPage"});
   });
-  
+
 
 app.listen(port, () => {
     console.log(`server is running at http://localhost:${port}`);
