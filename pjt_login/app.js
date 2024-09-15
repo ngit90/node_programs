@@ -63,7 +63,7 @@ app.post('/login', preventCache, (req, res) => {
 });
 
 // Route for the home page 
-app.get('/home', checkLogin,preventCache, (req, res) => {
+app.get('/home', checkLogin, preventCache, (req, res) => {
   res.render('home');
 });
 

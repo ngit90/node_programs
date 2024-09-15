@@ -13,6 +13,7 @@ app.get('/',(req,res) => {
 
 app.use((req, res, next) => {
     res.send('Error: Route not found');
+    next();
 });
 
 app.listen(port,() => {
