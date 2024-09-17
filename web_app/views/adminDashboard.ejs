@@ -9,12 +9,12 @@
 </head>
 <body>
     <div class="container">
-        <section class="vh-100" style="background-color: #84c99a;">
+        <section class="vh-150" style="background-color: #84c99a;">
             <div class="container py-3 ">
               <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12, col-md-6">
-                  <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                    <div class="card-body p-5">
+                <div class="col-12">
+                  <div class="shadow-2-strong" >
+                    <div class="card-body p-2">
 
 
 <a href="/admin/logout" id="logref" >Logout</a>
@@ -22,42 +22,44 @@
 <br>
 <div class="text-center">
 <form action="/admin/search" method="GET">
-    <input type="text" name="query" placeholder="Search users">
+    <input type="text" name="query" placeholder="Search by Username">
     <button type="submit">Search</button>
 </form>
 </div>
-<div class="text-center pt-2">
+<div class="text-center pt-3">
 <a href="/admin/create" id="logref" >Create New User</a>
 </div>
-<br>
-<h2>User List :</h2>
-<table>
+<h2 class="pb-2">User List :</h2>
+<div>
+<table class="table table-success table-hover">
     <thead>
         <tr >
-            <th class="pe-3">Username </th>
-            <th class="px-3">Email </th>
-            <th class="pe-3">UPDATE </th>
-            <th class="px-3">REMOVE </th>
+            <th class="p-3">NAME </th>
+            <th class="p-3">USERNAME </th>
+            <th class="p-3">EMAIL ID </th>
+            <th class="p-3">UPDATE </th>
+            <th class="p-3">REMOVE </th>
         </tr>
     </thead>
     <tbody>
         <% users.forEach(user => { %>
             <tr>
-                <td class="pe-3"><%= user.username %></td>
-                <td class="px-3"><%= user.email %></td>
-                <td class="px-3">
+                <td class="p-3"><%= user.name %></td>
+                <td class="p-3"><%= user.username %></td>
+                <td class="p-3"><%= user.email %></td>
+                <td class="p-4 ">
                     <a href="/admin/edit/<%= user._id %>">Edit</a>
                 </td>
-                <td class="px-3">
+                <td class="p-3">
                     <form action="/admin/delete/<%= user._id %>" method="POST">
-                        <button type="submit">Delete</button>
+                        <button class="btn-info" type="submit">Delete</button>
                     </form>
                 </td>
             </tr>
         <% }); %>
     </tbody>
 </table>
-
+</div>
 </div>
 </div>
 </div>

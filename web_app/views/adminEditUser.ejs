@@ -18,19 +18,24 @@
     <h1 class="text-center pb-3">Edit User</h1>
 
     <form action="/admin/edit/<%= user._id %>" method="POST">
+
+        <div class="form-group  mb-1">
+            <label for="name" >NAME  : &nbsp;&nbsp; &nbsp;</label>
+            <input type="text" id="name" name="name" value="<%= user.name %>" required>
+        </div>
         <div class="form-group  mb-1">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" value="<%= user.username %>" required>
         </div>
 
-        <div class="form-group  mb-1 pe-2"> 
+        <div class="form-group  mb-1 "> 
             <label for="email" >Email ID : &nbsp;</label>
             <input type="email" id="email" name="email" value="<%= user.email %>" required >
         </div>
 
-        <div class="form-group  mb-1">
+        <div class="form-group  mb-1 ">
             <label for="password">Password:&nbsp;</label>
-            <input type="password" id="password" name="password" value="<%= user.password %>" required>
+            <input type="text" id="password" name="password" value="<%= user.password %>" required  readonly>
         </div>
         <div class="text-center py-3">
         <Button type="submit" class=" btn-info">Update User</Button>

@@ -47,15 +47,20 @@ router.get('/search', adminAuth, preventCache, async (req, res) => {
 });
 
 router.get('/create',(req, res) => {
-    res.render('adminCreate');
+    res.render('adminCreate',{ alert: null });
 });
 
 // Create new user
 router.post('/create', adminAuth, preventCache, async (req, res) => {
-    const { username, email, password } = req.body;
-    const newUser = { username, email, password };
+    const { name,username, email, password } = req.body;
+    const existingUser = await req.usersCollection.findOne({ username });
+    if (existingUser) {
+        res.render('adminCreate', { alert: { type: 'danger', message: 'Username already exists. Please choose another one.' } });
+    } else {
+    const newUser = { name,username, email, password };
     await req.usersCollection.insertOne(newUser);
     res.redirect('/admin/dashboard');
+    }
 });
 
 // Edit user
@@ -67,10 +72,10 @@ router.get('/edit/:id', adminAuth, preventCache, async (req, res) => {
 
 router.post('/edit/:id', adminAuth,  preventCache, async (req, res) => {
     const userId = req.params.id;
-    const { username, email, password } = req.body;
+    const { name, username, email, password } = req.body;
     await req.usersCollection.updateOne(
         { _id: new ObjectId(userId) },
-        { $set: { username, email, password } }
+        { $set: { name,username, email, password } }
     );
     res.redirect('/admin/dashboard');
 });

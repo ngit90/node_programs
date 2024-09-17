@@ -18,7 +18,17 @@
 
 
         <h2 class="text-center py-3">Signup</h2>
+        <% if (alert) { %>
+            <div class="alert alert-<%= alert.type %> alert-dismissible fade show" role="alert">
+                <%= alert.message %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">X</button>
+            </div>
+        <% } %>
         <form action="/signup" method="POST">
+            <div class="form-group px-2">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
             <div class="form-group px-2">
                 <label for="username">Username:</label>
                 <input type="text" class="form-control" id="username" name="username" required>
