@@ -1,6 +1,7 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
 const router = express.Router();
+const crypto = require('crypto');
 
 // Middleware for checking admin authentication
 function adminAuth(req, res, next) {
@@ -14,6 +15,14 @@ function adminAuth(req, res, next) {
 function preventCache(req,res,next){
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     next();
+}
+
+function hashPassword(password, salt) {
+    return crypto.pbkdf2Sync(password, salt, 1000, 64, `sha256`).toString(`hex`);
+}
+  
+function generateSalt() {
+    return crypto.randomBytes(16).toString('hex');
 }
 
 // Admin login pagecls
@@ -53,11 +62,13 @@ router.get('/create',(req, res) => {
 // Create new user
 router.post('/create', adminAuth, preventCache, async (req, res) => {
     const { name,username, email, password } = req.body;
+    const salt = generateSalt();
+    const hashedPassword = hashPassword(password, salt);
     const existingUser = await req.usersCollection.findOne({ username });
     if (existingUser) {
         res.render('adminCreate', { alert: { type: 'danger', message: 'Username already exists. Please choose another one.' } });
     } else {
-    const newUser = { name,username, email, password };
+    const newUser = { name,username, email, hashedPassword, salt };
     await req.usersCollection.insertOne(newUser);
     res.redirect('/admin/dashboard');
     }
@@ -72,10 +83,10 @@ router.get('/edit/:id', adminAuth, preventCache, async (req, res) => {
 
 router.post('/edit/:id', adminAuth,  preventCache, async (req, res) => {
     const userId = req.params.id;
-    const { name, username, email, password } = req.body;
+    const { name, username, email } = req.body;
     await req.usersCollection.updateOne(
         { _id: new ObjectId(userId) },
-        { $set: { name,username, email, password } }
+        { $set: { name,username, email } }
     );
     res.redirect('/admin/dashboard');
 });
