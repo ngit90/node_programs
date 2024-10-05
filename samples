@@ -1,0 +1,66 @@
+function eventhandler(){
+    console.log("ok its fired");
+}
+
+//app.locals.title = "my site";
+//app.locals.myname = "noopura";
+
+app.get('/', (req,res) => {
+    ev.on('scream',eventhandler);
+    ev.emit('scream');
+    res.send("ok");
+});
+
+app.use('/new',(req,res,next) => {
+    res.locals.title = "my site";
+    res.locals.myname = "noopura";
+    next();
+});
+
+function access(req,res,next){
+    let x = req.params.id;
+    console.log(x);
+    next();
+}
+
+app.get('/new/:id', access, (req,res) => {
+    let date = new Date();
+    fs.writeFileSync('./dtdfile',date.toString());
+    res.render('newfil');
+});
+
+app.get('/dashboard', (req,res) => {
+    res.send("Hello Noopura");
+});
+app.get('/dash', (req, res) => {
+    datas = req.query;
+    console.log(datas);
+    res.send("search data collected");
+});
+
+app.get('/dashes',(req,res) => {
+    if(fs.existsSync('./new.txt')){
+        console.log("file exist");
+        fs.unlinkSync('./new.txt');
+        console.log("file deletd");
+    }
+    else
+        console.log("sorry sorry");
+    
+    res.send("file checkng");
+});
+app.get('/dashoose', (req,res) => {
+    const readable = fs.createReadStream('./new1.txt');
+    const writable = fs.createWriteStream('./new2.txt');
+   readable.pipe(writable);
+    res.send("stream creation checking");
+});
+app.get('/dd', (req,res) => {
+    throw new Error("not true");
+});
+app.use((err,req,res,next) => {
+    console.log(err)
+    res.send("error page");
+    next();
+});
+

@@ -17,7 +17,7 @@ function hashPassword(password, salt) {
 
 
   // Routes
-router.get('/', (req, res) => {
+router.get('/',  (req, res) => {
     if (req.session.user) {
         res.redirect('/home');
     } else {
@@ -26,13 +26,17 @@ router.get('/', (req, res) => {
 });
 
 router.get('/login', preventCache, (req, res) => {
+    if (!req.session.user) {
     res.render('login',{ alert: null });
+    }
+    else
+    res.redirect('/home');
 });
 
 router.get('/signup', (req, res) => {
     res.render('signup',{ alert: null });
+   
 });
-
 
 router.get('/home', preventCache, (req, res) => {
     if (req.session.user) {
@@ -42,11 +46,12 @@ router.get('/home', preventCache, (req, res) => {
     }
 });
 
-router.post('/login',  async (req, res) => {
+router.post('/login', preventCache, async (req, res) => {
     const { username, password } = req.body;
     const user = await req.usersCollection.findOne({ username }); 
     if (user == null) {
     return res.render('login', { alert: { type: 'danger', message: 'Invalid User' } });
+    //return res.redirect('/login');
     }
     const hashedPassword = hashPassword(password, user.salt);
     //console.log(user.salt);
@@ -69,7 +74,7 @@ router.post('/signup',  async (req, res) => {
     } else {
     const newUser = { name,username, email, hashedPassword, salt }; //
     await req.usersCollection.insertOne(newUser); //
-    req.session.user = newUser;
+    //req.session.user = newUser;
     res.redirect('/login');
     }
 });

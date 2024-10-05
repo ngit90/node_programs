@@ -1,49 +1,51 @@
 const express = require("express");
+const ejs = require("ejs");
+//const http = require("http");
+const events = require("events");
 const fs = require("fs");
+const { Stream } = require("stream");
 const port = 3000;
 
+const ev = new events.EventEmitter();
 const app = express();
-let datas;
+app.set("view engine","ejs");
+/*
+http.createServer( (req,res) => {
+    if(req.method == GET){
 
-app.get('/dashboard',(req,res) => {
-    const search = req.query;
-    //const s1 = req.params.id;
-    console.log(search);
-   // console.log(s1);
-    res.send("Helloworld");
-});
-app.get('/dash',(req,res) => {
-    const read = fs.createReadStream("./newfile.txt");
-    const write = fs.createWriteStream("./newdata.txt");
-    read.pipe(write);
-    read.on('data',(chunk) => {
-        datas = chunk.toString();
-        console.log(datas);
-    });
-    read.on('end',() => {
-        console.log("no more data");
-    });
-    res.send("data send to it");
-    res.end();
-})
-app.get('/',(req,res) => {
-    if(fs.existsSync("./newdata.txt"))
-        console.log("File exist");
-    else{
-        fs.writeFileSync("./newdata.txt","its new file");
-        console.log("File not exist");
     }
-    fs.unlinkSync("./newdata.txt");
-    console.log("File deleted successfully");
-    res.redirect('/dashboard');
+}).listen(port,() => {
+    console.log(`server at http://localhost:${port}`);
+});*/
+app.locals.myname = "noopura";
+app.locals.title = "homessss";
+app.get('/',(req,res) =>{
+    res.render('newfil');
+
 });
 
-
-app.use((req, res, next) => {
-    res.send('Error: Route not found');
+function access(req,res,next){
+    let datas = req.query;
+    console.log(datas);
     next();
+}
+function handler(){
+    console.log("fired");
+}
+app.get('/dash',(req,res) =>{
+    ev.on("scream",handler);
+    ev.emit('scream');
+    res.locals.myname = "anoop";
+    res.render('newfil');
 });
-
+app.get('/new/:id', (req,res) =>{
+   res.send("ok");
+});
+app.use((err,req,res,next) =>{
+    console.log(err);
+    res.send("error occured");
+    next();
+})
 app.listen(port,() => {
     console.log(`server at http://localhost:${port}`);
 });

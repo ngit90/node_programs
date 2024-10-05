@@ -2,7 +2,7 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const path = require('path');
+
 const adminRoutes = require('./routes/adminRoutes');  // Import admin routes
 const userRoutes = require('./routes/user');          // Import user routes
 const app = express();

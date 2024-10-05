@@ -27,12 +27,12 @@
             <%= data.password %>
             <br>
         <div>
-            <form action="/delete/<%= data.age %>" method="post">
+            <form action="/delete/<%= data.age %>?_method=DELETE" method="post">
                 <button type="submit">Delete</button>
             </form>
         </div>
         <div></div>
-            <form action="/edit/<%= data.age %>" method="post">
+            <form action="/edit/<%= data.age %>?_method=PUT" method="post">
                 <input type="text" name="name1" id="name1" placeholder="Name change here">
                 <button type="submit">Edit</button>
             </form>

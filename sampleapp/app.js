@@ -5,6 +5,11 @@ const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const fs = require("fs");
 const path = require("path");
+const methodOverride = require('method-override');
+
+// Allow overriding methods using `_method` in form data
+app.use(methodOverride('_method'));
+
 
 const url = 'mongodb://localhost:27017';
 const dbName = 'sampleapp';
@@ -76,14 +81,14 @@ app.post('/submission', async (req,res) => {
     res.render("index",{ title : "updates", users });
 });
 
-app.post('/delete/:age',  async (req, res) => {
+app.delete('/delete/:age',  async (req, res) => {
     const age = req.params.age;
     await collection.deleteOne({ age });
     const users = await collection.find().toArray();
     res.render("index",{ title : "updates", users });
 });
 
-app.post('/edit/:age',  async (req, res) => {
+app.put('/edit/:age',  async (req, res) => {
     const age = req.params.age;
     const { name1 } = req.body;
     await collection.updateOne({age},{$set : {name : name1}});

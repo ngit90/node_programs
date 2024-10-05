@@ -2,6 +2,11 @@ const express = require('express');
 const { ObjectId } = require('mongodb');
 const router = express.Router();
 const crypto = require('crypto');
+const methodOverride = require('method-override');
+
+// Allow overriding methods using `_method` in form data
+router.use(methodOverride('_method'));
+
 
 // Middleware for checking admin authentication
 function adminAuth(req, res, next) {
@@ -27,7 +32,11 @@ function generateSalt() {
 
 // Admin login pagecls
 router.get('/login', preventCache, (req, res) => {
+    if (!req.session.admin) {
     res.render('adminLogin', { alert: null });
+    }
+    else
+    res.redirect('/admin/dashboard');
 });
 
 // Admin login handler
@@ -81,7 +90,7 @@ router.get('/edit/:id', adminAuth, preventCache, async (req, res) => {
     res.render('adminEditUser', { user });
 });
 
-router.post('/edit/:id', adminAuth,  preventCache, async (req, res) => {
+router.put('/edit/:id', adminAuth,  preventCache, async (req, res) => {
     const userId = req.params.id;
     const { name, username, email } = req.body;
     await req.usersCollection.updateOne(
@@ -92,7 +101,7 @@ router.post('/edit/:id', adminAuth,  preventCache, async (req, res) => {
 });
 
 // Delete user
-router.post('/delete/:id', adminAuth,  preventCache, async (req, res) => {
+router.delete('/delete/:id', adminAuth,  preventCache, async (req, res) => {
     const userId = req.params.id;
     await req.usersCollection.deleteOne({ _id: new ObjectId(userId) });
     res.redirect('/admin/dashboard');

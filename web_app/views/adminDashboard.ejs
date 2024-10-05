@@ -51,7 +51,7 @@
                     <a href="/admin/edit/<%= user._id %>">Edit</a>
                 </td>
                 <td class="p-3">
-                    <form action="/admin/delete/<%= user._id %>" method="POST">
+                    <form action="/admin/delete/<%= user._id %>?_method=DELETE" method="post">
                         <button class="btn-info" type="submit">Delete</button>
                     </form>
                 </td>
